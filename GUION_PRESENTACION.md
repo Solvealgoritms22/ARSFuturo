@@ -57,6 +57,16 @@
 - *"Crear nueva autorización con un solo clic"*
 - *"El sistema ya pre-llena la información del afiliado"*
 
+### Vista móvil (tarjetas):
+*"En pantallas pequeñas, la tabla se oculta y se muestran tarjetas compactas:"*
+- **Resumen claro**: *"Nombre, cédula, plan, estado y fecha desde"*
+- **Contacto**: *"Teléfono y correo visibles dentro de la tarjeta"*
+- **Dependientes**: *"Número de dependientes"*
+- **Acciones integradas**: *"Nueva autorización y editar afiliado"*
+
+**Demostración rápida:**
+*"Reducimos la ventana a móvil y vemos cómo las tarjetas facilitan la lectura y las acciones sin perder información clave."*
+
 ---
 
 ## ✅ Módulo de Autorizaciones
@@ -84,6 +94,9 @@
 3. *"Asignamos el proveedor"*
 4. *"El sistema calcula automáticamente el copago según el plan"*
 
+### Vista móvil (tarjetas):
+*"Al igual que en otras secciones, en móvil las autorizaciones se visualizan como tarjetas con estados y acciones claras."*
+
 ---
 
 ## 📋 Gestión de Reclamos
@@ -106,6 +119,35 @@
 *"Abajo tenemos un resumen con:"*
 - **Estadísticas**: *"Número total de reclamos y monto"*
 - **Gráfico de Torta**: *"Proporción de aprobados vs rechazados"*
+
+### Vista móvil (tarjetas):
+*"En pantallas pequeñas, los reclamos se muestran en tarjetas que incluyen afiliado, proveedor, monto, estado y fecha, con acciones de registro y seguimiento."*
+
+---
+
+## 🩺 Registro de Servicios
+*"Esta sección conecta autorizaciones con los servicios realmente prestados al afiliado."*
+
+### Funcionalidades:
+- **Detalle de servicio**: *"Descripción, afiliado, proveedor, fecha, costo y copago"*
+- **Estado**: *"Pagado, pendiente de pago"*
+- **Vinculación**: *"Referencia a la autorización asociada"*
+
+### Vista móvil (tarjetas):
+*"En móvil, cada servicio se presenta como tarjeta con el detalle clave y estado destacado. La tabla se oculta para una lectura más cómoda."*
+
+---
+
+## 💸 Pagos a Proveedores
+*"Desde aquí emitimos y gestionamos pagos por los servicios realizados."*
+
+### Funcionalidades:
+- **Listado de pagos**: *"Proveedor, servicio, referencia bancaria, monto, fecha, método y estado"*
+- **Acción principal**: *"Emitir pago sobre servicios elegibles"*
+- **Exportación**: *"Descarga CSV para conciliación"*
+
+### Vista móvil (tarjetas):
+*"En pantallas pequeñas, los pagos se muestran como tarjetas con los campos clave y acciones disponibles, manteniendo la trazabilidad."*
 
 ---
 
@@ -146,14 +188,30 @@
 
 ---
 
+## 🧾 Facturación y Primas
+*"Administramos la facturación mensual por póliza: emisión, recordatorios y registro de pago."*
+
+### Funcionalidades Clave:
+- **Generación de mes**: *"Crear facturas del período para cada póliza vigente"*
+- **Recordatorios**: *"Enviar notificaciones de vencimiento"*
+- **Período de gracia**: *"Marcar factura en gracia según políticas"*
+- **Suspensión**: *"Suspender póliza si aplica por falta de pago"*
+- **Registro de pago**: *"Capturar fecha y referencia de pago"*
+- **Exportación**: *"Descargar CSV para contabilidad"*
+
+### Vista móvil (tarjetas):
+*"En móvil, las facturas se muestran como tarjetas con período, póliza, empresa, emisión, vencimiento, monto y estado, con acciones de registrar pago, recordatorio, gracia y suspensión."*
+
+---
+
 ## 📱 Diseño Responsivo
 *"Algo muy importante que quiero destacar es que toda la plataforma es completamente responsiva."*
 
 **Demostración:**
 *"Si redimensiono la ventana, pueden ver cómo se adapta automáticamente:"*
-- *"Las tablas se vuelven scrolleables horizontalmente"*
-- *"Los botones se reorganizan para pantallas pequeñas"*
-- *"Los gráficos mantienen su funcionalidad"*
+- *"En secciones clave (Afiliados, Autorizaciones, Servicios, Reclamos, Pagos y Facturación), las tablas se ocultan y se muestran tarjetas informativas"*
+- *"Los botones y acciones se integran dentro de cada tarjeta en móvil"*
+- *"Los gráficos mantienen su funcionalidad gracias a contenedores responsivos"*
 - *"Los modales se ajustan al tamaño de pantalla"*
 
 *"Esto significa que nuestros agentes pueden usar la plataforma desde cualquier dispositivo - computadora, tablet o teléfono móvil."*
@@ -196,6 +254,9 @@
 - **Autorizaciones**: 10 casos con diferentes estados
 - **Reclamos**: 10 casos con montos variados
 - **Pólizas**: 3 empresas con diferentes planes
+- **Servicios**: 2 casos vinculados a autorizaciones
+- **Pagos**: 1 pago registrado a proveedor
+- **Facturas**: 3 facturas con distintos estados
 
 ### Puntos Clave a Enfatizar:
 1. **Facilidad de uso** - Interfaz intuitiva
@@ -203,6 +264,39 @@
 3. **Flexibilidad** - Adaptable a diferentes dispositivos
 4. **Análisis** - Reportes y gráficos en tiempo real
 5. **Escalabilidad** - Preparado para crecer
+
+### Tips de demostración de modo móvil:
+- *"Reducir la ventana por debajo de `sm` para ver las tarjetas"*
+- *"Mostrar acciones dentro de tarjetas en Afiliados, Pagos y Facturación"*
+- *"Alternar entre pestañas para evidenciar el patrón consistente"*
+
+---
+
+## ⚙️ Tecnologías Utilizadas
+- **Frontend**: `React` + `Vite`
+- **Estilos**: `Tailwind CSS` + `PostCSS`
+- **Íconos**: `lucide-react`
+- **Gráficos**: `recharts` (contenedores responsivos y visualizaciones)
+- **Animaciones**: `framer-motion` (transiciones de pestañas y modales)
+- **Dev Server y Build**: `Node.js` + `npm`, `Vite` (HMR)
+- **Estructura del proyecto**: `src/App.jsx`, `src/index.css`, `tailwind.config.js`, `vite.config.js`
+- **Exportación de datos**: Utilidad `exportCsv` para descargas en `CSV`
+
+## 📚 Fuentes de Información Consultadas
+- **Normativa y lineamientos del sector**:
+  - Superintendencia de Salud y Riesgos Laborales (`SISALRIL`) – publicaciones y circulares públicas
+  - Consejo Nacional de la Seguridad Social (`CNSS`) – reglamentos y resoluciones
+- **Prácticas y referencias de ARS**: Portales públicos y manuales de usuario de ARS dominicanas para flujos habituales (autorizaciones, reclamos, pólizas y facturación)
+- **Buenas prácticas de UX/UI**: Patrones de diseño para portales transaccionales y accesibilidad
+- **Documentación técnica de librerías**:
+  - `React` (docs oficiales)
+  - `Vite` (docs oficiales)
+  - `Tailwind CSS` (guías y ejemplos)
+  - `Recharts` (componentes y responsividad)
+  - `Framer Motion` (animaciones declarativas)
+  - `lucide-react` (catálogo de íconos)
+
+> Nota: Esta es una demo funcional; los flujos están inspirados en procesos y normativas públicas, sin integrar sistemas productivos reales.
 
 ### Posibles Preguntas y Respuestas:
 - **¿Se integra con otros sistemas?** - Sí, está diseñado con APIs para integraciones
