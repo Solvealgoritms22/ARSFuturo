@@ -333,6 +333,7 @@ export default function ARS_Futuro_App() {
 
   const [q, setQ] = useState("");
   const [loading, setLoading] = useState(false);
+  const [openNuevoAfiliado, setOpenNuevoAfiliado] = useState(false);
 
   // Estado para notificaciones
   const [notifications, setNotifications] = useState([]);
@@ -467,6 +468,26 @@ export default function ARS_Futuro_App() {
     if (servicio) {
       setServicios(prev => prev.map(s => s.id === servicio.id ? { ...s, estado: "Pagado" } : s));
     }
+    return nuevo;
+  };
+
+  // Crear nuevo afiliado
+  const crearAfiliado = ({ nombre, cedula, plan, estado = "Activo", desde, nacimiento, telefono, correo, dependientes = 0 }) => {
+    const id = Math.max(0, ...afiliados.map(a => a.id)) + 1;
+    const nuevo = {
+      id,
+      nombre: nombre?.trim(),
+      cedula: cedula?.trim(),
+      plan,
+      estado,
+      desde: desde || new Date().toISOString().slice(0,10),
+      nacimiento: nacimiento || "",
+      telefono: telefono || "",
+      correo: correo || "",
+      dependientes: Number(dependientes) || 0,
+    };
+    setAfiliados(prev => [nuevo, ...prev]);
+    addNotification({ type: 'success', title: 'Afiliado creado', message: `${nuevo.nombre} agregado con ID ${nuevo.id}.` });
     return nuevo;
   };
 
@@ -824,11 +845,15 @@ export default function ARS_Futuro_App() {
                       <span className="text-sm text-slate-600">{afiliadosFiltrados.length} resultado(s)</span>
                     </div>
                     <div className="flex items-center gap-2">
+                      <Button variant="primary" className="flex items-center justify-center pt-1" onClick={() => setOpenNuevoAfiliado(true)}>
+                        <Plus className="w-4 h-4 mr-2"/> Nuevo afiliado
+                      </Button>
                       <Button variant="ghost" className="flex items-center justify-center pt-1" onClick={() => exportCsv("afiliados.csv", [["ID","Nombre","Cédula","Plan","Estado","Desde","Nacimiento","Teléfono","Correo","Dependientes"], ...afiliadosFiltrados.map(a => [a.id,a.nombre,a.cedula,a.plan,a.estado,formatDate(a.desde),formatDate(a.nacimiento),a.telefono,a.correo,a.dependientes])])}>
                         <FileDown className="w-4 h-4 mr-2"/> <span className="hidden sm:inline">Exportar</span>
                       </Button>
                     </div>
                   </div>
+                  <NuevoAfiliadoModal open={openNuevoAfiliado} onClose={() => setOpenNuevoAfiliado(false)} crearAfiliado={crearAfiliado} addNotification={addNotification} />
                   <div className="overflow-x-auto">
                     <table className="w-full text-sm min-w-[800px]">
                       <thead>
@@ -1045,6 +1070,95 @@ function EditarAfiliadoModal({ open, onClose, afiliado, onGuardar, addNotificati
       <div className="flex justify-end gap-2">
         <Button variant="ghost" onClick={onClose}>Cancelar</Button>
         <Button variant="primary" onClick={guardar}>Guardar cambios</Button>
+      </div>
+    </Modal>
+  );
+}
+
+function NuevoAfiliadoModal({ open, onClose, crearAfiliado, addNotification }) {
+  const [nombre, setNombre] = useState("");
+  const [cedula, setCedula] = useState("");
+  const [plan, setPlan] = useState("BASICO");
+  const [estado, setEstado] = useState("Activo");
+  const [desde, setDesde] = useState(new Date().toISOString().slice(0,10));
+  const [nacimiento, setNacimiento] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [correo, setCorreo] = useState("");
+  const [dependientes, setDependientes] = useState(0);
+
+  const limpiar = () => {
+    setNombre("");
+    setCedula("");
+    setPlan("BASICO");
+    setEstado("Activo");
+    setDesde(new Date().toISOString().slice(0,10));
+    setNacimiento("");
+    setTelefono("");
+    setCorreo("");
+    setDependientes(0);
+  };
+
+  const crear = () => {
+    if (!nombre || !cedula || !plan) return;
+    const nuevo = crearAfiliado({ nombre, cedula, plan, estado, desde, nacimiento, telefono, correo, dependientes });
+    onClose?.();
+    setTimeout(() => {
+      addNotification({ type: 'success', title: 'Afiliado creado', message: `${nuevo.nombre} agregado con ID ${nuevo.id}.` });
+    }, 50);
+    limpiar();
+  };
+
+  return (
+    <Modal open={open} onClose={onClose} title="Nuevo afiliado">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+        <div>
+          <label className="text-xs text-slate-600">Nombre completo</label>
+          <Input value={nombre} onChange={setNombre} placeholder="Ej.: Juan Pérez" />
+        </div>
+        <div>
+          <label className="text-xs text-slate-600">Cédula</label>
+          <Input value={cedula} onChange={setCedula} placeholder="001-1234567-8" />
+        </div>
+        <div>
+          <label className="text-xs text-slate-600">Plan</label>
+          <Select value={plan} onChange={setPlan}>
+            {PLANES.map(p => (
+              <option key={p.id} value={p.id}>{p.nombre}</option>
+            ))}
+          </Select>
+        </div>
+        <div>
+          <label className="text-xs text-slate-600">Estado</label>
+          <Select value={estado} onChange={setEstado}>
+            <option value="Activo">Activo</option>
+            <option value="Suspendido">Suspendido</option>
+          </Select>
+        </div>
+        <div>
+          <label className="text-xs text-slate-600">Desde</label>
+          <Input value={desde} onChange={setDesde} placeholder="YYYY-MM-DD" />
+        </div>
+        <div>
+          <label className="text-xs text-slate-600">Nacimiento</label>
+          <Input value={nacimiento} onChange={setNacimiento} placeholder="YYYY-MM-DD" />
+        </div>
+        <div>
+          <label className="text-xs text-slate-600">Teléfono</label>
+          <Input value={telefono} onChange={setTelefono} placeholder="+1 809 555 0000" />
+        </div>
+        <div>
+          <label className="text-xs text-slate-600">Correo</label>
+          <Input value={correo} onChange={setCorreo} placeholder="correo@ejemplo.do" />
+        </div>
+        <div>
+          <label className="text-xs text-slate-600">Dependientes</label>
+          <Input value={dependientes} onChange={val => setDependientes(Number(val) || 0)} placeholder="0" />
+        </div>
+      </div>
+      <Divider />
+      <div className="flex justify-end gap-2">
+        <Button variant="ghost" onClick={onClose}>Cancelar</Button>
+        <Button variant="success" className="flex items-center justify-center" onClick={crear}><CheckCircle2 className="w-4 h-4 mr-1"/>Crear afiliado</Button>
       </div>
     </Modal>
   );
